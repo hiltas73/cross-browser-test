@@ -1,19 +1,17 @@
 package com.utilities;
 
 import org.openqa.selenium.WebDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.safari.SafariDriver;
-
-import java.time.Duration;
 
 public class Driver {
 
-    private static WebDriver driver;
 
     /*
     Creating a private constructor, so we are closing
@@ -22,60 +20,51 @@ public class Driver {
     private Driver(){}
 
 
+    // We make WebDriver private, because we want to close access from outside of class
+    // We make it static, because we will use it inside static method
+    private static WebDriver driver;
+
     /*
    Create a re-usable utility method which will return same driver instance when we call it
     */
     public static WebDriver getDriver() {
 
+        // it will check if driver is null and if it is we will set up browser inside if statement
+        // if you already setup driver and using it again for following line of codes, it will return to same driver
         if (driver == null) {
 
            /*
             We read our browserType from configuration.properties.
             This way, we can control which browser is opened from outside our code, from configuration.properties.
              */
-            String browser = System.getProperty("browser") != null ? System.getProperty("browser") :
+            String browserType = System.getProperty("browser") != null ? browserType = System.getProperty("browser") :
                     ConfigurationReader.getProperty("browser");
 
 
-
-            switch (browser.toLowerCase()) {
+            switch (browserType.toLowerCase()) {
                 case "chrome":
-                    WebDriverManager.chromedriver().setup();
                     driver = new ChromeDriver();
                     break;
+
                 case "firefox":
-                    WebDriverManager.firefoxdriver().setup();
                     driver = new FirefoxDriver();
-
-                    /*
-                    System.setProperty("webdriver.chrome.driver", "C:\\Users\\Yasemin\\Desktop\\Web-Drivers\\geckodriver\\geckodriver.exe");
-                     */
                     break;
+
                 case "safari":
-                    WebDriverManager.safaridriver().setup();
                     driver = new SafariDriver();
-
                     break;
+
                 case "edge":
-                    WebDriverManager.edgedriver().setup();
                     driver = new EdgeDriver();
-
                     break;
+
+                    //Opera needs selenium 3.x.x not 4.x.x
 //                case "opera":
-//                    WebDriverManager.operadriver().setup();
 //                    driver = new OperaDriver();
-//
 //                    break;
-                case "ie":
-                    WebDriverManager.iedriver().setup();
-                    //driver = new InternetExplorerDriver();
-                    InternetExplorerOptions options = new InternetExplorerOptions();
-                    options.ignoreZoomSettings();
-                    driver = new InternetExplorerDriver(options);
 
-                    break;
                 default:
-                    throw new IllegalArgumentException("Browser not supported: " + browser);
+                    throw new IllegalArgumentException("Browser not supported: " + browserType);
             }
 
         }
@@ -84,6 +73,7 @@ public class Driver {
 
     }
 
+    // This method will make sure our driver value is always null after using quit() method
     public static void quitDriver() {
         if (driver != null) {
             driver.quit();

@@ -3,11 +3,8 @@ package com.stepDefinitions;
 import com.utilities.ConfigurationReader;
 import com.utilities.Driver;
 import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
 
 public class LoginStepDefinitions {
-
-    //private WebDriver driver;
 
     @Given("the user navigates to the Book Store page")
     public void theUserNavigatesToTheBookStorePage() {
