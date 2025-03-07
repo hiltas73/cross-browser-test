@@ -1,39 +1,45 @@
 package com.stepDefinitions;
 
+import com.pages.LoginPage;
 import com.utilities.ConfigurationReader;
 import com.utilities.Driver;
 import io.cucumber.java.en.*;
 
 public class LoginStepDefinitions {
 
-    @Given("the user navigates to the Book Store page")
-    public void theUserNavigatesToTheBookStorePage() {
+    LoginPage loginPage = new LoginPage();
+
+    @Given("the user navigates to {string} page")
+    public void theUserNavigatesToPage(String menuPage) {
         Driver.getDriver().get(ConfigurationReader.getProperty("url"));
+        loginPage.clickOnMenuItems(menuPage);
     }
 
     @When("the user clicks on the login button")
     public void clickLoginButton() {
-        // Implement Selenium code to click the login button
+        loginPage.loginButton.click();
     }
 
     @And("the user enters a valid username")
     public void enterValidUsername() {
-        // Implement Selenium code to enter the username
+        loginPage.username.sendKeys(ConfigurationReader.getProperty("username"));
     }
 
     @And("the user enters a valid password")
     public void enterValidPassword() {
-        // Implement Selenium code to enter the password
+        loginPage.password.sendKeys(ConfigurationReader.getProperty("password"));
     }
 
     @And("the user clicks the submit login button")
     public void clickSubmitLogin() {
-        // Implement Selenium code to submit the login form
+        loginPage.loginButton.click();
     }
 
     @Then("the user should be redirected to the Dashboard")
     public void verifyDashboardRedirection() {
-        // Implement validation to check if user is on the dashboard
+        String pageTitle = Driver.getDriver().getTitle();
+        System.out.println("pageTitle = " + pageTitle);
     }
+
 
 }
