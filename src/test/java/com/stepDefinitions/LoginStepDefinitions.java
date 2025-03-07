@@ -1,6 +1,7 @@
 package com.stepDefinitions;
 
 import com.pages.LoginPage;
+import com.utilities.BrowserUtils;
 import com.utilities.ConfigurationReader;
 import com.utilities.Driver;
 import io.cucumber.java.en.*;
@@ -12,22 +13,27 @@ public class LoginStepDefinitions {
     @Given("the user navigates to {string} page")
     public void theUserNavigatesToPage(String menuPage) {
         Driver.getDriver().get(ConfigurationReader.getProperty("url"));
+        BrowserUtils.waitFor(3);
         loginPage.clickOnMenuItems(menuPage);
+        BrowserUtils.waitFor(3);
     }
 
     @When("the user clicks on the login button")
     public void clickLoginButton() {
         loginPage.loginButton.click();
+        BrowserUtils.waitFor(3);
     }
 
     @And("the user enters a valid username")
     public void enterValidUsername() {
         loginPage.username.sendKeys(ConfigurationReader.getProperty("username"));
+        BrowserUtils.waitFor(3);
     }
 
     @And("the user enters a valid password")
     public void enterValidPassword() {
         loginPage.password.sendKeys(ConfigurationReader.getProperty("password"));
+        BrowserUtils.waitFor(3);
     }
 
     @And("the user clicks the submit login button")
